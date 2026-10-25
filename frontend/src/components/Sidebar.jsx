@@ -25,7 +25,6 @@ export default function Sidebar() {
         <div className="sidebar-brand-symbol">DS</div>
         <div>
           <div className="sidebar-brand-title">EpiSurv DB</div>
-          <div className="sidebar-brand-subtitle">DBMS Mini-Project 2026</div>
         </div>
       </div>
 

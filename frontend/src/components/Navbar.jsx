@@ -11,8 +11,8 @@ const titles = {
   '/lab-reports': 'Laboratory Reports',
   '/alerts': 'Outbreak Alerts',
   '/reports': 'Reports & Analytics',
-  '/database-insights': 'Database Insights & Viva Demo',
-  '/settings': 'System Configuration'
+  '/database-insights': 'Database Insights',
+  '/settings': 'System Settings'
 };
 
 export default function Navbar() {
@@ -24,31 +24,6 @@ export default function Navbar() {
       <div className="navbar-left">
         <h1 className="page-title">{currentTitle}</h1>
         <span className="page-breadcrumb">Epidemiology Portal &gt; {currentTitle}</span>
-      </div>
-
-      <div className="navbar-right">
-        {/* Demonstration Mode Warning */}
-        <div className="demo-tag" title="Synthetic educational data for DBMS academic evaluation">
-          <span className="demo-pulse-dot" />
-          <span>Demonstration Data</span>
-        </div>
-
-        {/* Database Status Indicator */}
-        <div className="db-status-badge">
-          <span className="db-online-dot" />
-          <span>MySQL (Port 3306)</span>
-        </div>
-
-        {/* Direct Link to phpMyAdmin */}
-        <a 
-          href="http://localhost/phpmyadmin/index.php?route=/database/structure&db=disease_surveillance_db" 
-          target="_blank" 
-          rel="noreferrer"
-          className="btn btn-secondary btn-sm"
-          title="Open phpMyAdmin in new tab"
-        >
-          phpMyAdmin
-        </a>
       </div>
     </header>
   );

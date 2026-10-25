@@ -58,9 +58,9 @@ export default function Settings() {
             </div>
 
             <div style={{ background: 'var(--bg-surface-subtle)', padding: '14px', borderRadius: '8px', border: '1px solid var(--color-border)' }}>
-              <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>phpMyAdmin Direct Access</div>
+              <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>phpMyAdmin Web Administration</div>
               <p style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '10px' }}>
-                Inspect the database, execute raw SQL queries, and view trigger structures via XAMPP web portal:
+                To view tables, triggers, and views in phpMyAdmin, ensure the <strong>Apache</strong> module is started in your XAMPP Control Panel alongside MySQL.
               </p>
               <a
                 href="http://localhost/phpmyadmin/index.php?route=/database/structure&db=disease_surveillance_db"
