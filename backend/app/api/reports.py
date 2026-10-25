@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.orm import Session
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, case
 from typing import Optional, List, Dict, Any
 from datetime import date
 import io
@@ -23,10 +23,10 @@ def get_disease_wise_report(
         Disease.category,
         Disease.severity_level,
         func.count(SurveillanceCase.case_id).label("total_cases"),
-        func.sum(func.case((SurveillanceCase.case_classification == "Confirmed", 1), else_=0)).label("confirmed_cases"),
-        func.sum(func.case((SurveillanceCase.case_status == "Active", 1), else_=0)).label("active_cases"),
-        func.sum(func.case((SurveillanceCase.outcome == "Recovered", 1), else_=0)).label("recovered_cases"),
-        func.sum(func.case((SurveillanceCase.outcome == "Deceased", 1), else_=0)).label("deceased_cases")
+        func.sum(case((SurveillanceCase.case_classification == "Confirmed", 1), else_=0)).label("confirmed_cases"),
+        func.sum(case((SurveillanceCase.case_status == "Active", 1), else_=0)).label("active_cases"),
+        func.sum(case((SurveillanceCase.outcome == "Recovered", 1), else_=0)).label("recovered_cases"),
+        func.sum(case((SurveillanceCase.outcome == "Deceased", 1), else_=0)).label("deceased_cases")
     ).outerjoin(SurveillanceCase, Disease.disease_id == SurveillanceCase.disease_id)
 
     if start_date:
@@ -69,9 +69,9 @@ def get_region_wise_report(
         Region.region_type,
         Region.population,
         func.count(SurveillanceCase.case_id).label("total_cases"),
-        func.sum(func.case((SurveillanceCase.case_classification == "Confirmed", 1), else_=0)).label("confirmed_cases"),
-        func.sum(func.case((SurveillanceCase.case_status == "Active", 1), else_=0)).label("active_cases"),
-        func.sum(func.case((SurveillanceCase.outcome == "Deceased", 1), else_=0)).label("deceased_cases")
+        func.sum(case((SurveillanceCase.case_classification == "Confirmed", 1), else_=0)).label("confirmed_cases"),
+        func.sum(case((SurveillanceCase.case_status == "Active", 1), else_=0)).label("active_cases"),
+        func.sum(case((SurveillanceCase.outcome == "Deceased", 1), else_=0)).label("deceased_cases")
     ).outerjoin(SurveillanceCase, Region.region_id == SurveillanceCase.region_id)
 
     if start_date:

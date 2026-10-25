@@ -43,7 +43,7 @@ export default function Overview() {
         params.start_date = d.toISOString().split('T')[0];
       }
 
-      const [sumRes, trendRes, disRes, regRes, outRes, recCasesRes, recAlertsRes] = await Promise.all([
+      const results = await Promise.allSettled([
         api.get('/api/dashboard/summary', { params }),
         api.get('/api/dashboard/cases-over-time', { params }),
         api.get('/api/dashboard/cases-by-disease'),
@@ -53,13 +53,13 @@ export default function Overview() {
         api.get('/api/dashboard/recent-alerts', { params: { limit: 4 } })
       ]);
 
-      setSummary(sumRes.data);
-      setTrendData(trendRes.data);
-      setDiseaseData(disRes.data);
-      setRegionData(regRes.data);
-      setOutcomeData(outRes.data);
-      setRecentCases(recCasesRes.data);
-      setRecentAlerts(recAlertsRes.data);
+      if (results[0].status === 'fulfilled') setSummary(results[0].value.data);
+      if (results[1].status === 'fulfilled') setTrendData(results[1].value.data);
+      if (results[2].status === 'fulfilled') setDiseaseData(results[2].value.data);
+      if (results[3].status === 'fulfilled') setRegionData(results[3].value.data);
+      if (results[4].status === 'fulfilled') setOutcomeData(results[4].value.data);
+      if (results[5].status === 'fulfilled') setRecentCases(results[5].value.data);
+      if (results[6].status === 'fulfilled') setRecentAlerts(results[6].value.data);
     } catch (err) {
       console.error('Failed to load dashboard data:', err);
     } finally {

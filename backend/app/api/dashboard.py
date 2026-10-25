@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, case
 from typing import Optional, List, Dict, Any
 from datetime import date, timedelta
 from app.database import get_db
@@ -58,8 +58,8 @@ def get_cases_over_time(
     query = db.query(
         SurveillanceCase.date_reported,
         func.count(SurveillanceCase.case_id).label("total_cases"),
-        func.sum(func.case((SurveillanceCase.case_classification == "Confirmed", 1), else_=0)).label("confirmed_cases"),
-        func.sum(func.case((SurveillanceCase.outcome == "Deceased", 1), else_=0)).label("deaths")
+        func.sum(case((SurveillanceCase.case_classification == "Confirmed", 1), else_=0)).label("confirmed_cases"),
+        func.sum(case((SurveillanceCase.outcome == "Deceased", 1), else_=0)).label("deaths")
     )
     if start_date:
         query = query.filter(SurveillanceCase.date_reported >= start_date)
@@ -114,7 +114,7 @@ def get_cases_by_region(
         Region.district_code,
         Region.region_type,
         func.count(SurveillanceCase.case_id).label("case_count"),
-        func.sum(func.case((SurveillanceCase.case_classification == "Confirmed", 1), else_=0)).label("confirmed_count")
+        func.sum(case((SurveillanceCase.case_classification == "Confirmed", 1), else_=0)).label("confirmed_count")
     ).join(SurveillanceCase, Region.region_id == SurveillanceCase.region_id, isouter=True)\
      .group_by(Region.region_id, Region.region_name, Region.district_code, Region.region_type)\
      .order_by(desc("case_count"))\
